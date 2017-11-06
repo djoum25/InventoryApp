@@ -459,6 +459,4 @@ public class AddNewProduct extends Fragment implements
 
         void setActionBarToModifyMode(String text);
     }
-
-
 }
