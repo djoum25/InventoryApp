@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("Product");
         setSupportActionBar(mToolbar);
+        fab = findViewById(R.id.add_fab);
 
         //load the list of current product activity
         CurrentProducts currentProducts = CurrentProducts.newInstance();
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements
             .replace(R.id.container, currentProducts)
             .commit();
 
-        fab = findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +135,8 @@ public class MainActivity extends AppCompatActivity implements
         if (mToolbar != null) {
             mToolbar.setTitle(R.string.add_new_product);
         }
-        fab.setVisibility(View.GONE);
+        if(fab != null)
+            fab.setVisibility(View.GONE);
     }
 
     @Override
