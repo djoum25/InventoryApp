@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.julienlaurent.learning.com.inventorytracker.MainActivity">
+    <item
+        android:id="@+id/action_add"
+        android:orderInCategory="100"
+        android:title="@string/add"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/add"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="200"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="300"
+        android:title="@string/delete_all_product"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_delete_supplier"
+        android:orderInCategory="400"
+        android:title="@string/delete_all_supplier"
+        app:showAsAction="never"/>
+
+</menu>
