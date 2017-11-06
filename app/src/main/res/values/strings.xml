@@ -81,4 +81,8 @@
     <string name="delete_product_message">You are about to delete all product record\n Do you want to continue</string>
     <string name="add_num">How many Would you like to add</string>
     <string name="not_enough">not enough in stock to get %1$d</string>
+    <string name="name_is_required_provider">Product need a name</string>
+    <string name="quantity_required_provider">Quantity required</string>
+    <string name="price_required_provider">Price is required</string>
+    <string name="picture_required_provider">Picture of the product is required</string>
 </resources>

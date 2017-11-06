@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.julienlaurent.learning.com.inventorytracker.R;
+
 /**
  * Created by djoum on 10/29/17.
  */
@@ -26,7 +28,6 @@ public class InventoryProvider extends ContentProvider {
 
     private InventoryDbHelper mDbHelper;
     private SQLiteDatabase mDatabase;
-    private String LOG_TAG = InventoryProvider.class.getSimpleName();
 
     public static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -50,7 +51,7 @@ public class InventoryProvider extends ContentProvider {
                         @Nullable String selection, @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
         mDatabase = mDbHelper.getReadableDatabase();
-        Cursor queryResult = null;
+        Cursor queryResult;
         switch (buildUriMatcher().match(uri)) {
             case PRODUCT_LIST:
                 queryResult = mDatabase.query(InventoryContract.ProductEntry.TABLE_NAME,
@@ -119,6 +120,25 @@ public class InventoryProvider extends ContentProvider {
     }
 
     private Uri insertProduct(Uri uri, ContentValues values) {
+        if (values.containsKey(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME) &&
+            values.containsKey(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY) &&
+            values.containsKey(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE) &&
+            values.containsKey(InventoryContract.ProductEntry.COLUMN_PRODUCT_IMAGE)) {
+            double price = values.getAsDouble(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE);
+            int quantity = values.getAsInteger(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
+            if (values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME) == null) {
+                throw new IllegalArgumentException(getContext().getString(R.string.name_is_required_provider));
+            } else if (values.getAsInteger(InventoryContract.ProductEntry
+                .COLUMN_PRODUCT_QUANTITY) == null || quantity < 1) {
+                throw new IllegalArgumentException(getContext().getString(R.string.quantity_required_provider));
+            } else if (values.getAsDouble(InventoryContract.ProductEntry
+                .COLUMN_PRODUCT_PRICE) == null || price < 1.0) {
+                throw new IllegalArgumentException(getContext().getString(R.string.price_required_provider));
+            } else if (values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_IMAGE) == null) {
+                throw new IllegalArgumentException(getContext().getString(R.string.picture_required_provider));
+            }
+        }
+
         mDatabase = mDbHelper.getWritableDatabase();
         final long insert = mDatabase.insert(InventoryContract.ProductEntry.TABLE_NAME, null, values);
         if (insert == -1) {

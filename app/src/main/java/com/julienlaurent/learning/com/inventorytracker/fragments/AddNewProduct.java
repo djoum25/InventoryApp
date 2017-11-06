@@ -136,10 +136,16 @@ public class AddNewProduct extends Fragment implements
         ContentValues values = Utility.productValues(product);
         String name = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
         int quatity = values.getAsInteger(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        double price = values.getAsDouble(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE);
+        String image = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_IMAGE);
         if (TextUtils.isEmpty(name) || name.length() < 1) {
             throw new IllegalArgumentException(getString(R.string.product_name_required));
         } else if (quatity < 1) {
             throw new IllegalArgumentException(getString(R.string.quantity_required));
+        } else if (price < 1) {
+            throw new IllegalArgumentException(getString(R.string.price_required_provider));
+        } else if (TextUtils.isEmpty(image) || image.length() < 1) {
+            throw new IllegalArgumentException(getString(R.string.picture_required_provider));
         } else {
             final Uri newUri = getContext().getContentResolver()
                 .insert(InventoryContract.ProductEntry.PRODUCT_CONTENT_URI, values);
@@ -222,7 +228,13 @@ public class AddNewProduct extends Fragment implements
                     .commit();
                 break;
             case R.id.product_browse_image:
-                startIntentSelectPicure();
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, SELECT_PICTURE_INTENT_ID);
+                } else {
+                    startIntentSelectPicure();
+                }
                 break;
         }
     }
